@@ -1,12 +1,22 @@
 import { useNavigation } from '@react-navigation/core'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { auth } from '../firebase'
+import app from '../services/api'
 
-const HomeScreen = () => {
+const Senhas = () => {
   const navigation = useNavigation()
-
+  const [senha, setSenha] = useState('')
   
+  useEffect( () => {
+
+  }, [])
+
+  const getCep = async () =>{
+    const result = await app.get('https://viacep.com.br/ws/65066350/json/')
+    console.log(result)
+
+  }
 
   const handleSignOut = () => {
     auth
@@ -16,9 +26,7 @@ const HomeScreen = () => {
       })
       .catch(error => alert(error.message))
   }
-  const handleSenhas = () => {
-        navigation.replace("Senhas")
-  }
+
   return (
     <View style={styles.container}>
       <Text>Email: {auth.currentUser?.email}</Text>
@@ -29,23 +37,20 @@ const HomeScreen = () => {
         <Text style={styles.buttonText}>Sign out</Text>
       </TouchableOpacity>
 
-        <View>
-            <TouchableOpacity
-                onPress={handleSenhas}
-                style={styles.button}
-
-            >
-                <Text style={styles.buttonText}>Chamar Senhas</Text>
-
-            </TouchableOpacity>           
-        </View>
-
+      <View>
+      <TextInput
+            placeholder="Email"
+            placeholderTextColor="#fff" 
+            value={ senha }
+            onChangeText={text => setSenha(text)}
+            style={styles.input}
+          />
+      </View>
     </View>
-
   )
 }
 
-export default HomeScreen
+export default Senhas
 
 const styles = StyleSheet.create({
   container: {
@@ -60,6 +65,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 40,
+  },
+  input: {
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 5,
   },
   buttonText: {
     color: 'white',
